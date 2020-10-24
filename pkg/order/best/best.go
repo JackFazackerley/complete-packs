@@ -8,7 +8,7 @@ import (
 )
 
 // Calculate simply calculates the best sequence of packs for the given target of items
-func Calculate(target int, sizes []float64) (sequence []pack.Pack) {
+func Calculate(target int, sizes []float64) (sequence pack.Packs) {
 	// queue is used for keeping a queue of the next number, will only ever be positive numbers
 	queue := list.New()
 
