@@ -13,13 +13,13 @@ func TestOrder_Calculate(t *testing.T) {
 		name     string
 		sizes    []float64
 		target   int
-		expected []pack.Pack
+		expected pack.Packs
 	}{
 		{
 			name:   "1 should give 250",
 			sizes:  []float64{250, 500, 1000, 2000, 5000},
 			target: 1,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 1,
 					Size:  250,
@@ -46,7 +46,7 @@ func TestOrder_Calculate(t *testing.T) {
 			name:   "250 should give 250",
 			sizes:  []float64{250, 500, 1000, 2000, 5000},
 			target: 250,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 1,
 					Size:  250,
@@ -73,7 +73,7 @@ func TestOrder_Calculate(t *testing.T) {
 			name:   "251 should give 500",
 			sizes:  []float64{250, 500, 1000, 2000, 5000},
 			target: 251,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 0,
 					Size:  250,
@@ -100,7 +100,7 @@ func TestOrder_Calculate(t *testing.T) {
 			name:   "501 should give 1x500 1x250",
 			sizes:  []float64{250, 500, 1000, 2000, 5000},
 			target: 501,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 1,
 					Size:  250,
@@ -127,7 +127,7 @@ func TestOrder_Calculate(t *testing.T) {
 			name:   "12001 should give 2x5000 1x2000 1x250",
 			sizes:  []float64{250, 500, 1000, 2000, 5000},
 			target: 12001,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 1,
 					Size:  250,
@@ -154,7 +154,7 @@ func TestOrder_Calculate(t *testing.T) {
 			name:   "1 should give 1x5",
 			sizes:  []float64{5, 250, 500, 1000, 2000, 5000},
 			target: 1,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 1,
 					Size:  5,
@@ -185,7 +185,7 @@ func TestOrder_Calculate(t *testing.T) {
 			name:   "251 should give 1x250 1x5",
 			sizes:  []float64{5, 250, 500, 1000, 2000, 5000},
 			target: 251,
-			expected: []pack.Pack{
+			expected: pack.Packs{
 				{
 					Count: 1,
 					Size:  5,
