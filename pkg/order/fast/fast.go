@@ -26,7 +26,9 @@ func Calculate(target float64, sizes []float64) (sequence []pack.Pack) {
 			remainder = newRemainder
 
 			// store the pack to the sequence
-			sequence = append(sequence, pack)
+			if pack.Count > 0 {
+				sequence = append(sequence, pack)
+			}
 
 			//keep track of the total Calculated for the second iteration
 			calculatedTotal += pack.Size * pack.Count
@@ -34,6 +36,8 @@ func Calculate(target float64, sizes []float64) (sequence []pack.Pack) {
 		// remainder is now set to the total calculated on the next iteration we find the best solution
 		remainder = calculatedTotal
 	}
+
+	//sequence = sequence[:len(sequence)-1]
 
 	return
 }
