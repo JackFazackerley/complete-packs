@@ -90,6 +90,16 @@ func TestController_Best(t *testing.T) {
 			expectedResponse: []byte(`{"error":"parsing request body"}`),
 			expectedCode:     http.StatusBadRequest,
 		},
+		{
+			name: "returns too large error",
+			sizeCache: cache.New(&TestDatbase{
+				shouldError: false,
+				sizes:       []float64{250, 500, 1000, 2000, 5000},
+			}),
+			body:             []byte(`{"target": 99999999}`),
+			expectedResponse: []byte(`{"error":"target too large"}`),
+			expectedCode:     http.StatusBadRequest,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

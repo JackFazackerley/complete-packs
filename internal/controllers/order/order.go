@@ -14,6 +14,7 @@ import (
 
 var (
 	parsingRequestBody = errors.New("parsing request body")
+	targetTooLarge     = errors.New("target too large")
 )
 
 type Controller struct {
@@ -32,9 +33,16 @@ func New(sizeCache cache.Cache) *Controller {
 
 func (o *Controller) Best(c *gin.Context) {
 	var input Request
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		log.WithError(err).Error(parsingRequestBody)
 		c.JSON(http.StatusBadRequest, c.Error(parsingRequestBody))
+		return
+	}
+
+	// this is purely here to stop the server crashing and running out of memory
+	if input.Target > 9999999 {
+		c.JSON(http.StatusBadRequest, c.Error(targetTooLarge))
 		return
 	}
 
