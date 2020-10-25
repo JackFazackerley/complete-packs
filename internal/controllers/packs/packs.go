@@ -12,6 +12,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var (
+	parsingRequestBody = errors.New("parsing request body")
+)
+
 type Controller struct {
 	db         database.Database
 	sizesCache cache.Cache
@@ -40,19 +44,19 @@ func (r *Controller) Write(c *gin.Context) {
 	var input Request
 	if err := c.ShouldBindJSON(&input); err != nil {
 		log.WithError(err).Error("parsing request body")
-		c.Status(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, c.Error(parsingRequestBody))
 		return
 	}
 
 	if err := r.db.WritePack(input.Size); err != nil {
 		log.WithError(err).Error("write new size")
-		c.Status(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, c.Error(errors.Cause(err)))
 		return
 	}
 
 	if err := r.sizesCache.Load(); err != nil {
 		log.WithError(err).Error("loading cache")
-		c.Status(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, c.Error(errors.Cause(err)))
 		return
 	}
 

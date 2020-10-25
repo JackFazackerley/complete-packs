@@ -124,6 +124,7 @@ func TestController_Write(t *testing.T) {
 		body         []byte
 		dbCreate     bool
 		expectedCode int
+		expectedBody []byte
 	}{
 		{
 			name:         "returns as expected",
@@ -131,6 +132,7 @@ func TestController_Write(t *testing.T) {
 			body:         []byte(`{"size": 10}`),
 			dbCreate:     true,
 			expectedCode: http.StatusOK,
+			expectedBody: nil,
 		},
 		{
 			name:         "incorrect request body",
@@ -138,13 +140,15 @@ func TestController_Write(t *testing.T) {
 			body:         []byte(`[{}]`),
 			dbCreate:     true,
 			expectedCode: http.StatusBadRequest,
+			expectedBody: []byte(`{"error":"parsing request body"}`),
 		},
 		{
 			name:         "size exists",
 			sizes:        []float64{250, 500, 1000, 2000, 5000},
 			body:         []byte(`{"size": 250}`),
-			dbCreate:     false,
+			dbCreate:     true,
 			expectedCode: http.StatusInternalServerError,
+			expectedBody: []byte(`{"error":"duplicate key"}`),
 		},
 		{
 			name:         "unable to write to table",
@@ -152,6 +156,7 @@ func TestController_Write(t *testing.T) {
 			body:         []byte(`{"size": 10}`),
 			dbCreate:     false,
 			expectedCode: http.StatusInternalServerError,
+			expectedBody: []byte(`{"error":"writing pack"}`),
 		},
 	}
 	for _, tt := range tests {
@@ -171,6 +176,9 @@ func TestController_Write(t *testing.T) {
 			}
 
 			assert.Equal(t, tt.expectedCode, recorder.Code)
+			t.Logf("got %s", recorder.Body.Bytes())
+			t.Logf("wat %s", tt.expectedBody)
+			assert.Equal(t, tt.expectedBody, recorder.Body.Bytes())
 		})
 	}
 }
