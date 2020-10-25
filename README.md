@@ -23,7 +23,7 @@ The orders API has two endpoints `/order/best` and `/order/fast`. The difference
 ## Packs API
 The packs API has three endpoints `packs/read`, `packs/write`, and `packs/delete`.
 
-## Calulcation methods
+## Calculation methods
 
 ### Best
 [Best pkg](pkg/order/best)
