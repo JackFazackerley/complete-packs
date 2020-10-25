@@ -8,6 +8,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gin-contrib/cors"
+
 	"github.com/JackFazackerley/complete-packs/internal/database"
 
 	"github.com/JackFazackerley/complete-packs/pkg/cache"
@@ -44,9 +46,10 @@ func main() {
 	order := orderController.New(sizesCache)
 
 	router := gin.Default()
+	router.Use(cors.Default())
 	orderGroup := router.Group("/order")
-	orderGroup.GET("/best", order.Best)
-	orderGroup.GET("/fast", order.Fast)
+	orderGroup.POST("/best", order.Best)
+	orderGroup.POST("/fast", order.Fast)
 
 	packsGroup := router.Group("/packs")
 	packsGroup.GET("/read", packs.Read)
@@ -54,7 +57,7 @@ func main() {
 	packsGroup.DELETE("/delete", packs.Delete)
 
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":9090",
 		Handler: router,
 	}
 
