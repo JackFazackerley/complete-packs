@@ -72,6 +72,8 @@ func TestSQLite_ReadPacks(t *testing.T) {
 			s := &SQLite{
 				db: tt.db,
 			}
+			defer s.Close()
+
 			got, err := s.ReadPacks()
 			assert.Equal(t, tt.expectedErr, errors.Cause(err))
 			assert.Equal(t, tt.expectedPacks, got)
@@ -104,6 +106,8 @@ func TestSQLite_WritePack(t *testing.T) {
 			s := &SQLite{
 				db: tt.db,
 			}
+			defer s.Close()
+
 			err := s.WritePack(tt.size)
 			assert.Equal(t, tt.expectedErr, errors.Cause(err))
 		})

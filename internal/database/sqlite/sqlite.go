@@ -6,13 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/JackFazackerley/complete-packs/internal/config"
 	"github.com/JackFazackerley/complete-packs/internal/database"
 )
 
 const (
-	driver = "sqlite3"
-
 	GetQuery    = "SELECT size FROM packs"
 	InsertQuery = "INSERT INTO packs (size) VALUES (?)"
 	DeleteQuery = "DELETE FROM packs WHERE size = ?"
@@ -28,15 +25,10 @@ type SQLite struct {
 	db *sqlx.DB
 }
 
-func New(config config.Database) (database.Database, error) {
-	db, err := sqlx.Open(driver, config.Address())
-	if err != nil {
-		return nil, errors.Wrap(err, "connecting to sqlite3 database")
-	}
-
+func New(db *sqlx.DB) database.Database {
 	return &SQLite{
 		db: db,
-	}, nil
+	}
 }
 
 // ReadPacks reads the packs into the passed slice of packs
