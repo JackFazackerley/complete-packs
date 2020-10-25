@@ -57,6 +57,12 @@
       </b-container>
     </div>
 
+    <div>
+      <b-modal ref="error-modal" id="error-modal" centered title="Error">
+        <p class="my-4">{{this.error}}</p>
+      </b-modal>
+    </div>
+
   </div>
 </template>
 
@@ -73,20 +79,23 @@ export default {
       newSize: 0,
       target: 0,
       packs: [],
+      error: "",
     }
   },
   created() {
     this.readPack()
   },
   methods: {
+    showModal() {
+      this.$refs['error-modal'].show()
+    },
     readPack: function() {
       axios({ method: "GET", url: "http://"+ process.env.VUE_APP_ENDPOINT + "/packs/read", data: null, headers: {"content-type": "text/plain" } }).then(result => {
         this.sizes = result.data
 
       }).catch( error => {
-        /*eslint-disable*/
-        console.error(error);
-        /*eslint-enable*/
+        this.error = error.response.data.error
+        this.showModal()
       });
     },
     deletePack: function(size) {
@@ -95,9 +104,8 @@ export default {
         this.readPack()
 
       }).catch( error => {
-        /*eslint-disable*/
-        console.error(error);
-        /*eslint-enable*/
+        this.error = error.response.data.error
+        this.showModal()
       });
     },
     writePack: function() {
@@ -106,9 +114,8 @@ export default {
         this.readPack()
 
       }).catch( error => {
-        /*eslint-disable*/
-        console.error(error);
-        /*eslint-enable*/
+        this.error = error.response.data.error
+        this.showModal()
       });
     },
     orderBest: function() {
@@ -116,9 +123,8 @@ export default {
         this.packs = result.data
 
       }).catch( error => {
-        /*eslint-disable*/
-        console.error(error);
-        /*eslint-enable*/
+        this.error = error.response.data.error
+        this.showModal()
       });
     },
     orderFast: function() {
@@ -126,9 +132,8 @@ export default {
         this.packs = result.data
 
       }).catch( error => {
-        /*eslint-disable*/
-        console.error(error);
-        /*eslint-enable*/
+        this.error = error.response.data.error
+        this.showModal()
       });
     },
   }
