@@ -111,7 +111,6 @@ func TestController_Read(t *testing.T) {
 			}
 
 			assert.Equal(t, tt.expectedCode, recorder.Code)
-			t.Logf("here %s", recorder.Body.Bytes())
 			assert.Equal(t, tt.expectedResponse, recorder.Body.Bytes())
 		})
 	}
@@ -176,8 +175,6 @@ func TestController_Write(t *testing.T) {
 			}
 
 			assert.Equal(t, tt.expectedCode, recorder.Code)
-			t.Logf("got %s", recorder.Body.Bytes())
-			t.Logf("wat %s", tt.expectedBody)
 			assert.Equal(t, tt.expectedBody, recorder.Body.Bytes())
 		})
 	}
