@@ -45,7 +45,7 @@ Fast needs to be called twice this is because the first pass will find the total
 #### Issues
 Fast is well fast, the only issue with it is that each size needs to be a multiplication of each other. If this isn't the case it will sometimes give the wrong answer. A good example is by having sizes `[499,500]` and the target `998` the best answer is `2x499` but it gives `1x499,1x500`. This is because of the 499 not being a multiple of 500.
 
-##SQLite
+## SQLite
 The database of choice to store the sizes in. It doesn't need the bloat of a full database.
 
 To setup the database run the following command:
@@ -54,3 +54,18 @@ sqlite3 packs.db < setup.sql
 ```
  
 Make sure that the `config.yaml` file is pointing to the correct path for the db.
+
+### Running locally
+To the run API server simply run these commands: 
+
+```
+go mod vendor
+go run -mod vendor cmd/api/main.go
+``` 
+
+To run the API:
+```
+cd cmd/ui
+npm install
+npm run serve
+```
