@@ -98,6 +98,12 @@ func TestSQLite_WritePack(t *testing.T) {
 			name:        "already exists",
 			db:          dbInit(true, t),
 			size:        250,
+			expectedErr: DuplicateKey,
+		},
+		{
+			name:        "unknown error",
+			db:          dbInit(false, t),
+			size:        250,
 			expectedErr: WriteError,
 		},
 	}

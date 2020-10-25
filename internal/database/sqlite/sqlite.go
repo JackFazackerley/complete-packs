@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"github.com/jmoiron/sqlx"
+	"github.com/mattn/go-sqlite3"
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/pkg/errors"
@@ -16,9 +17,10 @@ const (
 )
 
 var (
-	ReadError   = errors.New("reading packs")
-	WriteError  = errors.New("writing pack")
-	DeleteError = errors.New("deleting pack")
+	ReadError    = errors.New("reading packs")
+	WriteError   = errors.New("writing pack")
+	DuplicateKey = errors.New("duplicate key")
+	DeleteError  = errors.New("deleting pack")
 )
 
 type SQLite struct {
@@ -42,6 +44,11 @@ func (s *SQLite) ReadPacks() (packs []float64, err error) {
 
 func (s *SQLite) WritePack(size int) error {
 	if _, err := s.db.Exec(InsertQuery, size); err != nil {
+		if sqliteErr, ok := err.(sqlite3.Error); ok {
+			if sqliteErr.Code == sqlite3.ErrConstraint {
+				return DuplicateKey
+			}
+		}
 		return errors.Wrap(WriteError, err.Error())
 	}
 	return nil
