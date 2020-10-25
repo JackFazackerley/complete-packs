@@ -4,6 +4,8 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/JackFazackerley/complete-packs/internal/database/sqlite"
+
 	"github.com/pkg/errors"
 
 	"github.com/stretchr/testify/assert"
@@ -18,7 +20,7 @@ type TestDatbase struct {
 
 func (t *TestDatbase) ReadPacks() (packs []float64, err error) {
 	if t.shouldError {
-		return nil, readError
+		return nil, sqlite.ReadError
 	}
 	return t.sizes, nil
 }
@@ -60,7 +62,7 @@ func TestSizes_Load(t *testing.T) {
 				sizesASC:  []float64{},
 				sizesDESC: []float64{},
 			},
-			expectedErr: readError,
+			expectedErr: sqlite.ReadError,
 			expectedSizes: sizes{
 				sizesASC:  []float64{},
 				sizesDESC: []float64{},

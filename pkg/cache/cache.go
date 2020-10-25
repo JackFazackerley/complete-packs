@@ -4,13 +4,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/pkg/errors"
-
 	"github.com/JackFazackerley/complete-packs/internal/database"
-)
-
-var (
-	readError = errors.New("reading packs")
 )
 
 type Cache interface {
@@ -40,7 +34,7 @@ func New(db database.Database) Cache {
 func (c *Sizes) Load() error {
 	packs, err := c.db.ReadPacks()
 	if err != nil {
-		return errors.Wrap(readError, err.Error())
+		return err
 	}
 
 	// we want to block to stop any new calls possibly getting an empty slice

@@ -64,7 +64,7 @@ func TestSQLite_ReadPacks(t *testing.T) {
 			name:          "errors",
 			db:            dbInit(false, t),
 			expectedPacks: nil,
-			expectedErr:   readError,
+			expectedErr:   ReadError,
 		},
 	}
 	for _, tt := range tests {
@@ -96,7 +96,7 @@ func TestSQLite_WritePack(t *testing.T) {
 			name:        "already exists",
 			db:          dbInit(true, t),
 			size:        250,
-			expectedErr: writeError,
+			expectedErr: WriteError,
 		},
 	}
 	for _, tt := range tests {
@@ -133,7 +133,7 @@ func TestSQLite_DeletePack(t *testing.T) {
 			name:        "database doesn't exist",
 			db:          dbInit(false, t),
 			size:        250,
-			expectedErr: deleteError,
+			expectedErr: DeleteError,
 		},
 	}
 	for _, tt := range tests {
